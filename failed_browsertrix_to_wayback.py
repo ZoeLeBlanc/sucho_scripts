@@ -127,7 +127,8 @@ def wayback_archive_url(row: pd.Series, session=None, delay_before_request=SLEEP
     return ok
 
 
-def get_or_save_browsertrix_links(yaml_path: str, output_path: str, get_csv: bool, send_wayback: bool):
+def get_or_save_browsertrix_links(yaml_path: str, output_path: str, get_csv: bool = False, send_wayback: bool = False):
+    """Function to get or save browsertrix links from a yaml file."""
     crawl_yaml = get_crawl_yaml(yaml_path)
     output_path = output_path + 'failed_browsertrix_links_' + crawl_yaml['collection'] + '.csv'
     crawl_data = get_crawl_data(crawl_yaml)
@@ -151,4 +152,5 @@ if __name__ == '__main__':
     parser.add_argument('--get_csv', action=argparse.BooleanOptionalAction, help='Get csv of failed links for gsheets')
     parser.add_argument('--send_wayback', action=argparse.BooleanOptionalAction, help='Send failed links to wayback')
     args = parser.parse_args()
+
     get_or_save_browsertrix_links(args.yaml_path, args.output_path, args.get_csv, args.send_wayback)
