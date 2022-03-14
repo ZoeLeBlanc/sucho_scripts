@@ -1,0 +1,5 @@
+internetarchive==2.3.0
+pandas==1.4.1
+PyYAML==6.0
+requests==2.27.1
+tqdm==4.63.0
