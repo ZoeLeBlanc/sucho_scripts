@@ -1,6 +1,6 @@
 # SUCHO Scripts
 
-Repository for scripts and tools for [SUCHO](sucho.org).
+Repository for scripts and tools for [SUCHO](https://www.sucho.org/).
 
 Scripts:
 
