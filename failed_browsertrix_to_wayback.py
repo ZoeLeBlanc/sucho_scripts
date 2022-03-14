@@ -7,6 +7,7 @@ from tqdm import tqdm
 from internetarchive import get_session
 from time import sleep
 import os
+import argparse
 
 MAX_RECURSIVE = 10
 SLEEP_PAUSE = 0.75
@@ -144,10 +145,10 @@ def get_or_save_browsertrix_links(yaml_path: str, output_path: str, get_csv: boo
 
 
 if __name__ == '__main__':
-    yaml_path = './crawls/collections/archives-gov-ua/crawls/crawl-20220306003404-057a3ad75a61.yaml'
-    crawl_identifier = yaml_path.split('crawl-')[-1].split('.')[0]
-    output_path = '' #Only specify if you want a different location than where the script is run
-    get_csv = True
-    send_wayback = False
-    
-    get_or_save_browsertrix_links(yaml_path, output_path, get_csv, send_wayback)
+    parser = argparse.ArgumentParser(description='Get or save failed browsertrix links')
+    parser.add_argument('--yaml_path', type=str, help='Path to crawl yaml file')
+    parser.add_argument('--output_path', type=str, help='Path to output file (only change if you want a different directory)')
+    parser.add_argument('--get_csv', action=argparse.BooleanOptionalAction, help='Get csv of failed links for gsheets')
+    parser.add_argument('--send_wayback', action=argparse.BooleanOptionalAction, help='Send failed links to wayback')
+    args = parser.parse_args()
+    get_or_save_browsertrix_links(args.yaml_path, args.output_path, args.get_csv, args.send_wayback)
