@@ -21,26 +21,31 @@ CLIENT_HEADERS = {
 }
 
 def get_crawl_yaml(file_path: str) -> dict:
+    """ Read crawl yaml file """
     with open(file_path) as f:
         crawl_yaml = yaml.safe_load(f)
     return crawl_yaml
 
 def get_crawl_data(crawl_yaml: dict) -> pd.DataFrame:
+    """ Get crawl data from yaml file """
     crawl_data = pd.DataFrame({'done_links': crawl_yaml['state']['done']})
     return crawl_data
 
 def clean_links(row: pd.Series) -> dict:
+    """ Clean links from yaml file """
     cleaned_link = row.done_links.replace(':false', ':False').replace(':true', ':True')
     return literal_eval(cleaned_link)
 
 
 def get_failed_links(crawl_data: pd.DataFrame) -> pd.DataFrame:
+    """ Get failed links from crawl data """
     crawl_data['cleaned_links'] = crawl_data.apply(clean_links, axis=1)
     crawled_links = pd.json_normalize(crawl_data['cleaned_links'])
     return crawled_links
 
 
 def get_failed_links_to_wayback(crawled_links: pd.DataFrame) -> pd.DataFrame:
+    """ Check if failed links are in wayback """
     crawled_links.failed.fillna(False, inplace=True)
 
     failed_links = crawled_links[crawled_links.failed == True]
@@ -60,6 +65,7 @@ def get_failed_links_to_wayback(crawled_links: pd.DataFrame) -> pd.DataFrame:
     return failed_links
 
 def generate_links_for_wayback(failed_links: pd.DataFrame) -> pd.DataFrame:
+    """ Generate links for wayback """
     for index, row in tqdm(failed_links.iterrows(), total=failed_links.shape[0], desc='Generating Wayback Links'):
         if row.process_wayback == True:
             continue
