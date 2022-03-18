@@ -83,13 +83,13 @@ def start_ia_session():
     starts an internet archive session """
     config = dict(
         s3=dict(
-            acccess=os.get('INTERNET_ARCHIVE_ACCESS_KEY'),
-            secret=os.get('INTERNET_ARCHIVE_SECRET_KEY'),
+            acccess=os.getenv('INTERNET_ARCHIVE_ACCESS_KEY'),
+            secret=os.getenv('INTERNET_ARCHIVE_SECRET_KEY'),
         )
     )
     s = get_session(config=config, debug=True)
-    s.access_key = os.get('INTERNET_ARCHIVE_ACCESS_KEY')
-    s.secret_key = os.get('INTERNET_ARCHIVE_SECRET_KEY')
+    s.access_key = os.getenv('INTERNET_ARCHIVE_ACCESS_KEY')
+    s.secret_key = os.getenv('INTERNET_ARCHIVE_SECRET_KEY')
     return s
 
 def wayback_archive_url(row: pd.Series, session=None, delay_before_request=SLEEP_PAUSE, client_headers=CLIENT_HEADERS, try_again=True):
